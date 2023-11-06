@@ -3,6 +3,7 @@
     <!-- Display categorized activities -->
     <div v-for="category in categories" :key="category.id">
       <h2 class="py-4">{{ category.name }}</h2>
+
       <draggable v-model="category.activities" itemKey="id" tag="ol" group="activities" @end="saveOrder">
         <template #item="{ element }">
           <li class="cursor-pointer">{{ element.name }}</li>
