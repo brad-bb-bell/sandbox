@@ -4,7 +4,15 @@
     <div v-for="category in categories" :key="category.id">
       <h2 class="py-4">{{ category.name }}</h2>
 
-      <draggable v-model="category.activities" itemKey="id" tag="ol" group="activities" @end="saveOrder">
+      <draggable
+        v-model="category.activities"
+        itemKey="id"
+        tag="ol"
+        group="activities"
+        @start="dragStart"
+        @drop="dropItem"
+        :data-category-id="category.id"
+      >
         <template #item="{ element }">
           <li class="cursor-pointer">{{ element.name }}</li>
         </template>
@@ -14,7 +22,15 @@
     <!-- Display uncategorized activities -->
     <div v-if="uncategorizedActivities.length">
       <h2 class="py-4">Uncategorized</h2>
-      <draggable v-model="uncategorizedActivities" itemKey="id" tag="ol" group="activities" @end="saveOrder">
+      <draggable
+        v-model="uncategorizedActivities"
+        itemKey="id"
+        tag="ol"
+        group="activities"
+        @start="dragStart"
+        @drop="dropItem"
+        :data-activity-id="uncategorizedActivities.id"
+      >
         <template #item="{ element }">
           <li class="cursor-pointer">{{ element.name }}</li>
         </template>
@@ -144,11 +160,44 @@ export default {
           ],
         },
       ],
-      categories: [], // Define the categories array
-      uncategorizedActivities: [], // Define the uncategorizedActivities array
+      categories: [],
+      uncategorizedActivities: [],
+      draggedItem: null,
     };
   },
   methods: {
+    dragStart(e) {
+      console.log("dragStart", e);
+      this.draggedItem = e.item;
+    },
+    dropItem(e) {
+      console.log("categoryID", e.to.dataset.categoryId);
+      console.log("activityID", e.to.dataset.activityId);
+      // const toCategoryID = e.to.dataset.categoryId;
+      console.log("dropItem", e, toCategoryID);
+      this.addActivityToCategory(this.draggedItem.id, toCategoryID);
+    },
+    addActivityToCategory(activityID, categoryID) {
+      // Find the activity and category objects
+      const activity = this.activities.find((a) => a.id === activityID);
+      const category = this.categories.find((c) => c.id === parseInt(categoryID));
+
+      if (activity && category) {
+        // Remove from previous category if it exists
+        activity.categories.forEach((cat, index) => {
+          if (cat.id === category.id) {
+            activity.categories.splice(index, 1);
+          }
+        });
+
+        // Add to the new category
+        activity.categories.push({ id: category.id, name: category.name });
+        // You may want to do a Vue.set if you need reactivity
+      }
+    },
+    detectMove(e) {
+      console.log("detectMove", e);
+    },
     saveOrder() {
       console.log("saveOrder");
     },
