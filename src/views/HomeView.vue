@@ -171,9 +171,7 @@ export default {
     },
     dropItem(e) {
       console.log("categoryId of dropped item", e.to.dataset.categoryId);
-      // console.log("activityID", e.to.dataset.activityId);
-      // // const toCategoryID = e.to.dataset.categoryId;
-      // console.log("dropItem", e, toCategoryID);
+      // const toCategoryID = e.to.dataset.categoryId;
       // this.addActivityToCategory(this.draggedItem.id, toCategoryID);
     },
     addActivityToCategory(activityID, categoryID) {
