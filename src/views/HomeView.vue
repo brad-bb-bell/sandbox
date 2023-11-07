@@ -29,10 +29,9 @@
         group="activities"
         @start="dragStart"
         @end="dropItem"
-        :data-activity-id="uncategorizedActivities.id"
       >
         <template #item="{ element }">
-          <li class="cursor-pointer">{{ element.name }}</li>
+          <li class="cursor-pointer" :data-id="element.id">{{ element.name }}</li>
         </template>
       </draggable>
     </div>
@@ -167,8 +166,8 @@ export default {
   },
   methods: {
     dragStart(e) {
-      console.log("dragStart", e);
       this.draggedItem = e.item;
+      console.log("activityId of dragged item", e.item.dataset.id);
     },
     dropItem(e) {
       console.log("categoryId of dropped item", e.to.dataset.categoryId);
