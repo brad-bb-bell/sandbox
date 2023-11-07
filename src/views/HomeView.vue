@@ -10,7 +10,7 @@
         tag="ol"
         group="activities"
         @start="dragStart"
-        @drop="dropItem"
+        @end="dropItem"
         :data-category-id="category.id"
       >
         <template #item="{ element }">
@@ -28,7 +28,7 @@
         tag="ol"
         group="activities"
         @start="dragStart"
-        @drop="dropItem"
+        @end="dropItem"
         :data-activity-id="uncategorizedActivities.id"
       >
         <template #item="{ element }">
@@ -171,11 +171,11 @@ export default {
       this.draggedItem = e.item;
     },
     dropItem(e) {
-      console.log("categoryID", e.to.dataset.categoryId);
-      console.log("activityID", e.to.dataset.activityId);
-      // const toCategoryID = e.to.dataset.categoryId;
-      console.log("dropItem", e, toCategoryID);
-      this.addActivityToCategory(this.draggedItem.id, toCategoryID);
+      console.log("categoryId of dropped item", e.to.dataset.categoryId);
+      // console.log("activityID", e.to.dataset.activityId);
+      // // const toCategoryID = e.to.dataset.categoryId;
+      // console.log("dropItem", e, toCategoryID);
+      // this.addActivityToCategory(this.draggedItem.id, toCategoryID);
     },
     addActivityToCategory(activityID, categoryID) {
       // Find the activity and category objects
